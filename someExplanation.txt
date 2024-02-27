@@ -1,0 +1,23 @@
+DTO : DTO signifie (DATA TRANSFER OBJECT) objet de transfert de données. 
+Nous pouvons spécifier l'objet. (données que vous pouvez attendre du corps dans la demande). 
+Utile si nous utilisons TypeScript. Concerne les requetes POST et PATCH(UPDATE). 
+Un DTO est un objet qui définit comment les données seront envoyées sur le réseau.
+Ils sont integre dans les controllers.
+Les classes Dto restent les seules source de vérité pour notre objet Post Body 
+(plutôt que de devoir créer une classe de validation distincte).
+Les DTO permettent de verifier les donnees entrantes veant du client. 
+On associe les DTO à la classe class-validator(qui doit être installée)
+
+
+Entités : les entités sont destinées aux tables ou aux collections. 
+Le décorateur d'entité doit créer le schéma de base de données pour toutes 
+les classes décorées avec celui-ci, et le référentiel peut être récupéré et utilisé pour cela.
+
+Contrôleur : les contrôleurs NestJS gèrent les requêtes entrantes, 
+définissent les points de terminaison de l'API et implémentent une logique métier pour générer des réponses HTTP appropriées.
+
+Service : le service NestJS effectuera une opération de base de données et 
+renverra la réponse appropriée.
+
+Les Repository sont integre dans les service. Ce sont des referentiels de nos table 
+permettant de faire des operations dans de la base de donnees
