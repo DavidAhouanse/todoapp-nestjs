@@ -1,9 +1,16 @@
-import { Module } from '@nestjs/common';
+import {
+  Module,
+  MiddlewareConsumer,
+  RequestMethod,
+  NestModule,
+} from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TaskModule } from './task/task.module';
 import { Task } from './task/entity/task.entity';
+import { LoggerMiddleware } from './common/middlewares/logger.middleware';
+import { LoggerService } from './common/services/logger.service';
 //import { HelloController } from './task/hello/hello.controller';
 
 /* Ajouter les entités dans le tableau  */
@@ -17,16 +24,7 @@ import { Task } from './task/entity/task.entity';
       username: 'postgres',
       password: 'postgres',
       database: 'quasar_todo_app',
-      /**
-       * TypeORM utilise les classes spécifiées dans le tableau entities pour créer une correspondance entre ces entités
-       * et les tables de la base de données. Une fois que les entités sont liées aux tables de la base de données, vous
-       * pouvez utiliser les méthodes fournies par TypeORM pour effectuer des opérations CRUD .
-       */
       entities: [Task],
-
-      /**
-       * Cette option n'est pas utile en mode production. En mode production, nous ferons recours aux migrations
-       */
       synchronize: true,
       retryAttempts: 0,
       //autoLoadEntities: true
@@ -34,6 +32,12 @@ import { Task } from './task/entity/task.entity';
     TaskModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, LoggerService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(LoggerMiddleware)
+      .forRoutes({ path: '*', method: RequestMethod.ALL });
+  }
+}

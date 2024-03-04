@@ -2,11 +2,30 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+// import * as winston from 'winston';
+// const { combine, printf, timestamp, prettyPrint, errors } = winston.format;
+// import { Logger } from './common/logger';
 
 async function bootstrap() {
-  //retourne un objet dans la constance app
+  // const logger = winston.createLogger({
+  //   level: 'info',
+  //   //format: winston.format.json(),
+  //   format: combine(
+  //     timestamp(),
+  //     //printf((info) => `${info.timestamp} ${info.level} : ${info.message}`),
+  //     prettyPrint(),
+  //   ),
+  //   transports: [
+  //     new winston.transports.Console(),
+  //     new winston.transports.File({ filename: 'app.log' }),
+  //   ],
+  // });
+
+  // logger.info('An info log');
+  // logger.error('An error log', new Error('504 Gateway timeout'));
+
   const app = await NestFactory.create(AppModule, {
-    abortOnError: false, // renvoie une erreur lors de la creation de l'app
+    abortOnError: false,
   });
 
   app.useGlobalPipes(
@@ -29,11 +48,8 @@ async function bootstrap() {
    * create a full document (with all HTTP routes defined) we use the createDocument()
    */
   const document = SwaggerModule.createDocument(app, configDoc);
-
   /**
-   * The path to mount the Swagger UI
-   * An application instance
-   * The document object instantiated above
+   * The path to mount the Swagger UI, An application instance,  The document object instantiated above
    */
   SwaggerModule.setup('docs', app, document);
 
